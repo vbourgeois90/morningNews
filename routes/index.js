@@ -40,10 +40,14 @@ router.post('/signup', async function(req, res, next) {
     let user = await newUser.save();
     if(user!==undefined){
       result='success'
-      res.json({result, token: user.token})
+      res.json({result, token: user.token, language: user.language})
+    } else {
+      res.json({result});
     }
+  } else {
+    res.json({result});
   }
-  res.json({result});
+  
 });
 
 
