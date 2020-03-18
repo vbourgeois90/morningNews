@@ -90,8 +90,6 @@ router.post('/addarticle', async function(req, res, next){
   
   let user = await userModel.findOne({token: req.body.token});
   if(user){
-    // console.log('user articles :', user.article);
-    // console.log('req.body :', req.body);
     let index=user.article.findIndex(article => article.title===req.body.title);
     console.log('index :', index);
     if(index===-1){
