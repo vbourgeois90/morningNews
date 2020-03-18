@@ -6,7 +6,7 @@ var options = {
     useNewUrlParser: true,
 }
 
-mongoose.connect('mongodb+srv://wzhou:mZl7S3rzJQK4P2mZ@morningnews-fmroi.mongodb.net/morningnews?retryWrites=true&w=majority',
+mongoose.connect('mongodb+srv://admin:mongopassword@clustervb-etqlb.azure.mongodb.net/newmorning-news?authSource=admin&replicaSet=ClusterVB-shard-0&w=majority&readPreference=primary&appname=MongoDB%20Compass&retryWrites=true&ssl=true',
     options,
     function(err){
         console.log(err);

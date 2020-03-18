@@ -32,6 +32,7 @@ router.post('/signup', async function(req, res, next) {
     let newUser = new userModel ({
       username: req.body.username,
       email: req.body.email,
+      language: 'fr',
       password: SHA256(req.body.password + salt).toString(encBase64),
       salt: salt,
       token: uid2(32)
@@ -73,5 +74,64 @@ router.post('/signin', async function(req, res, next) {
   });
 
 });
+
+
+// ADD FAVORITE ARTICLE TO USER BDD \\
+router.post('/addarticle', async function(req, res, next){
+
+  let error=[];
+  
+  let article={
+    title: req.body.title,
+    desc: req.body.desc,
+    img: req.body.img,
+    content: req.body.content,
+  }
+  
+  let user = await userModel.findOne({token: req.body.token});
+  if(user){
+    // console.log('user articles :', user.article);
+    // console.log('req.body :', req.body);
+    let index=user.article.findIndex(article => article.title===req.body.title);
+    console.log('index :', index);
+    if(index===-1){
+      user.article.push(article);
+      let userSaved = await user.save();
+    }
+  } else {
+    error.push("Can't find user")
+  }
+
+  res.json({error})
+})
+
+
+// REMOVE FAVORITE ARTICLE FROM USER BDD \\
+router.delete('/removearticle/:user/:title', async function(req, res, next){
+
+  let error=[];
+
+  let user = await userModel.findOne({token: req.params.user});
+  let index=user.article.findIndex(article => article.title === req.params.title);
+  user.article.splice(index, 1);
+  let userSaved = await user.save();
+
+  res.json({error});
+})
+
+
+// SAVE USER FAVORITE LANGUAGE - A FAIRE EN PUT (à update côté front également)
+// router.post('/language', async function(req, res, next){
+
+//   let error=[];
+
+//   console.log(req.body)
+//   let user = await userModel.UPDATEONE     ({token: req.body.token}); 
+
+//   user.language=req.body.language;
+
+//   res.json({error})
+// })
+
 
 module.exports = router;
