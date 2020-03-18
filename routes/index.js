@@ -121,17 +121,22 @@ router.delete('/removearticle/:user/:title', async function(req, res, next){
 
 
 // SAVE USER FAVORITE LANGUAGE - A FAIRE EN PUT (à update côté front également)
-// router.post('/language', async function(req, res, next){
+router.put('/language', async function(req, res, next){
 
-//   let error=[];
+  let error=[];
 
-//   console.log(req.body)
-//   let user = await userModel.UPDATEONE     ({token: req.body.token}); 
+  console.log(req.body)
 
-//   user.language=req.body.language;
+  let user = await userModel.findOne({token: req.body.token}); 
+  if(user){
+    user.language=req.body.language;
+    let userSaved = await user.save();
+  } else {
+    error.push("Can't find user")
+  }
 
-//   res.json({error})
-// })
+  res.json({error})
+})
 
 
 module.exports = router;
